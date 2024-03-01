@@ -11,7 +11,7 @@ public class Server {
             InvertedIndexService service = new ForkJoinPoolImpl();
 
             // Create registry on port 1099
-            Registry registry = LocateRegistry.createRegistry(1099);
+            Registry registry = LocateRegistry.createRegistry(1098);
 
             // Bind the remote object's stub in the registry
             registry.rebind("InvertedIndexService", service);
