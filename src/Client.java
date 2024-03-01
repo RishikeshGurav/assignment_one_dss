@@ -12,7 +12,8 @@ public class Client {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
 
             // Lookup the remote object "InvertedIndexService" from registry
-            InvertedIndexService service = (InvertedIndexService) registry.lookup("InvertedIndexService");
+          //  InvertedIndexService service = (InvertedIndexService) registry.lookup("InvertedIndexService");
+            InvertedIndexService invertedIndexService = (InvertedIndexService) Naming.lookup("20.55.20.121/InvertedIndexService");
 
             // Call remote method
             Map<String, List<Integer>> index = service.getInvertedIndex("File.txt");
