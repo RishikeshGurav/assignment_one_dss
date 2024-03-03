@@ -1,4 +1,4 @@
-
+package RMI;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -13,11 +13,11 @@ public class Client {
 
             // Lookup the remote object "InvertedIndexService" from registry
           //  InvertedIndexService service = (InvertedIndexService) registry.lookup("InvertedIndexService");
-            InvertedIndexService service = (InvertedIndexService) registry.lookup("20.55.20.121/InvertedIndexService");
+            InvertedIndexService service = (InvertedIndexService) registry.lookup("InvertedIndexService");
 
             // Call remote method
             Map<String, List<Integer>> index = service.getInvertedIndex("File.txt");
-
+            System.out.println("Result:");
             // Process and display the results
             index.forEach((key, value) -> System.out.println(key + " found on lines: " + value));
         } catch (Exception e) {
