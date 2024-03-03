@@ -1,3 +1,4 @@
+package RMI;
 
 
 import java.io.IOException;
@@ -46,20 +47,31 @@ public class ForkJoinPoolImpl extends UnicastRemoteObject implements InvertedInd
         @Override
         protected void compute() {
             if (end - start <= THRESHOLD) {
-                FileRead.locateWords(lines.subList(start, end)).forEach((key, value) ->
-                        result.merge(key, value, (v1, v2) -> {
-                            List<Integer> merged = new ArrayList<>(v1);
-                            merged.addAll(v2);
-                            return merged;
-                        }));
+                processLinesWithOffset(lines.subList(start, end), start);
             } else {
-                System.out.println("Fork");
                 int mid = start + (end - start) / 2;
                 InvertedIndexTask left = new InvertedIndexTask(lines, start, mid);
                 InvertedIndexTask right = new InvertedIndexTask(lines, mid, end);
-                left.fork();
-                right.compute();
+                invokeAll(left, right);
+
                 left.join();
+                right.join();
+
+                // Merge results from left and right tasks
+                result.putAll(left.getResult());
+                result.putAll(right.getResult());
+            }
+        }
+
+        private void processLinesWithOffset(List<String> lines, int offset) {
+            for (int i = 0; i < lines.size(); i++) {
+                String[] words = lines.get(i).split("\\s+");
+                for (String word : words) {
+                    word = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+                    if (!word.isEmpty()) {  // Check if the word is not empty after cleaning
+                        result.computeIfAbsent(word, k -> new ArrayList<>()).add(i + offset);
+                    }
+                }
             }
         }
 
@@ -67,4 +79,5 @@ public class ForkJoinPoolImpl extends UnicastRemoteObject implements InvertedInd
             return result;
         }
     }
+
 }
