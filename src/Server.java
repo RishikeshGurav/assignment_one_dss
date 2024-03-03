@@ -1,4 +1,4 @@
-
+package RMI;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -9,6 +9,7 @@ public class Server {
         try {
             // Create and export a remote object
             InvertedIndexService service = new ForkJoinPoolImpl();
+            //InvertedIndexService service = new ExecutorCallableImpl();
 
             // Create registry on port 1099
             Registry registry = LocateRegistry.createRegistry(1099);
@@ -23,4 +24,3 @@ public class Server {
         }
     }
 }
-
