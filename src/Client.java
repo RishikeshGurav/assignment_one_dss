@@ -9,7 +9,7 @@ public class Client {
     public static void main(String[] args) {
         try {
             // Get registry
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry("20.55.20.121", 1099);
 
             // Lookup the remote object "InvertedIndexService" from registry
           //  InvertedIndexService service = (InvertedIndexService) registry.lookup("InvertedIndexService");
